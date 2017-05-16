@@ -4,8 +4,8 @@
 // but you don't so you're going to write it from scratch:
 
 var isEmpty = function (obj) {
-  for(var key in obj) {
-    if(obj.hasOwnProperty(key)) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
       return false;
     }
   }
@@ -31,25 +31,32 @@ var stringifyJSON = function(obj) {
       obj.forEach(function(element) {
         result += stringifyJSON(element) + ',';
       });
-      result = result.slice(0, result.length-1);
+      result = result.slice(0, result.length - 1);
       result += ']';
     }
+  } else if (typeof obj === 'function' || obj === undefined) {
+    result += '';
   } else if (typeof obj === 'object') {
     if (isEmpty(obj)) {
       result += '{}';
     } else {
+      var counter = 0;
       result += '{';
-      for (var key in obj){
-        result += stringifyJSON(key) + ':' + stringifyJSON(obj[key]) + ',';
+      for (var key in obj) {
+        if (obj[key] === undefined || typeof obj[key] === 'function') {
+          result += '';
+        } else {
+          result += stringifyJSON(key) + ':' + stringifyJSON(obj[key]) + ',';
+          counter++;
+        }
       }
-      result = result.slice(0, result.length-1);
+      if (counter > 0) {
+        result = result.slice(0, result.length - 1);
+      }
       result += '}';
     }
-  } else if (obj === undefined) {
-      result += '';
-  } else if (obj === )
+  }
 
   return result;
-
 };
 
